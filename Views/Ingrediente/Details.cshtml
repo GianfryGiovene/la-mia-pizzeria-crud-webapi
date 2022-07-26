@@ -1,0 +1,20 @@
+﻿@model Ingrediente
+
+
+
+<div class="container">
+
+    <div class="text-center">
+        <h2>@Model.Name</h2>
+    </div>
+    
+    <div class="my-2">
+        <a  class="btn btn-danger mt-2 " href="@Url.Action("Index","Ingrediente")">Indietro</a>
+    </div>
+
+    <div class="my-2">
+        <a href="@Url.Action("Update","Ingrediente")" class="btn btn-warning">Modifica</a>
+    </div>
+
+</div>
+
