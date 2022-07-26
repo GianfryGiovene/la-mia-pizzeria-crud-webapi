@@ -20,14 +20,14 @@
                 <th class="col-2">Comandi</th>
             </tr>
         </thead>
-        <tbody class="js_post_table">
+        <tbody class="pizza-table">
 
         </tbody>
        
     </table>
         
         
-    <div class="col-12 text-center js_no_post">
+    <div class="col-12 text-center no-pizza">
         <strong class="text-center ">Non ci sono pizze da visualizzare</strong>        
     </div>
         
@@ -42,18 +42,18 @@
 axios.get("api/pizza").then(data => { 
     const list = data.data;
     if (list == 0) {
-        document.querySelector('.js_no_post').classList.remove('d-none');
-        document.querySelector('.js_post_table').classList.add('d-none');
+        document.querySelector('.no-pizza').classList.remove('d-none');
+        document.querySelector('.pizza-table').classList.add('d-none');
     }else{
-        document.querySelector('.js_post_table').classList.remove('d-none');
-        document.querySelector('.js_no_post').classList.add('d-none');
+        document.querySelector('.pizza-table').classList.remove('d-none');
+        document.querySelector('.no-pizza').classList.add('d-none');
 
-        document.querySelector('.js_post_table').innerHTML = '';
+        document.querySelector('.pizza-table').innerHTML = '';
 
         list.forEach(pizza => {
             console.log("post", pizza);
 
-            document.querySelector('.js_post_table').innerHTML +=
+            document.querySelector('.pizza-table').innerHTML +=
             `
                 <tr class="my-lg-2 ">
                         <td class="align-middle l"><img src="${pizza.photoUrl}" class="w-100 rounded-circle border-5 border border-success"/></td>
