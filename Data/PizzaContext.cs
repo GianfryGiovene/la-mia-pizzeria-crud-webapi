@@ -5,6 +5,15 @@ namespace LaMiaPizzeria.Data
 {
     public class PizzaContext :DbContext
     {
+        public PizzaContext()
+        {
+        }
+        public PizzaContext(DbContextOptions<PizzaContext> options)        : base(options)
+        {
+        }
+
+
+
         public DbSet<Pizza> PizzaList { get; set; }
         public DbSet<Ingrediente> IngredienteList { get; set; }
         public DbSet<Categoria> CategoriaList { get; set; }
