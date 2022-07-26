@@ -1,11 +1,14 @@
 ﻿using LaMiaPizzeria.Data;
 using LaMiaPizzeria.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 
+
 namespace LaMiaPizzeria.Controllers
 {
+    [Authorize]
     public class PizzaController : Controller
     {
         //************* INDEX VIEW ***************

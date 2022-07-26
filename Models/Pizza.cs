@@ -54,6 +54,11 @@ namespace LaMiaPizzeria.Models
             this.IngredienteList = ingredientsList;
         }
 
+        public Pizza()
+        {
+
+        }
+
         public void EditPizza(string name, string description, string photoUrl, double price, int categoryId)
         {
             this.Name = name;
@@ -64,9 +69,6 @@ namespace LaMiaPizzeria.Models
             
         }
 
-        public Pizza()
-        {
-
-        }
+        
     }
 }

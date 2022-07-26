@@ -4,7 +4,8 @@ using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 var connectionString = builder.Configuration.GetConnectionString("PizzaContextConnection") ?? throw new InvalidOperationException("Connection string 'PizzaContextConnection' not found.");
-builder.Services.AddDbContext<PizzaContext>(options =>    options.UseSqlServer(connectionString)); 
+builder.Services.AddDbContext<PizzaContext>(options =>
+    options.UseSqlServer(connectionString)); 
 
 
 // Add services to the container.
@@ -33,10 +34,14 @@ app.UseStaticFiles();
 
 app.UseRouting();
 
+app.UseAuthentication();
+
 app.UseAuthorization();
 
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
+
+app.MapRazorPages();
 
 app.Run();

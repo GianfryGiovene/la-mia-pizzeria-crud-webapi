@@ -59,7 +59,7 @@ axios.get("api/pizza").then(data => {
                         <td class="align-middle l"><img src="${pizza.photoUrl}" class="w-100 rounded-circle border-5 border border-success"/></td>
                         <td class="align-middle">${pizza.name}</td>
                         <td class="align-middle">${pizza.description}</td>
-                        <td class="align-middle">${pizza.categoryId}</td>                 
+                        <td class="align-middle">${pizza.category.name}</td>                 
                         <td class="align-middle">${pizza.price}</td>
                         <td class="align-middle">
                             nulla assoluto
