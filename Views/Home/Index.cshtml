@@ -5,11 +5,15 @@
 <div class="text-center">
     <h1 class="display-4">Benvenuto dove le pizze costano il doppio</h1>
     <h2>Visualizza le nostre pizze!!</h2>    
-    <p>  <a class="btn btn-primary" href="~/Pizza">QUI</a></p>
+    <div>
+        <a class="btn btn-primary" href="~/Pizza">QUI</a>
+    </div>
 </div>
 <div class="container ">
     <div class="my-2">
-        <input id="input" type="text" placeholder="Cerca una pizza" onkeyup="search"/>
+        <label for="input-text"><strong>Cerca: </strong></label>
+        <input id="input" for="input-text" type="text" placeholder="Cerca una pizza" onkeyup="doSearch"/>
+        
     </div>
     <table  class="table table-hover">
         <thead>
@@ -39,8 +43,9 @@
 
 @section Scripts {
     <script type="text/javascript">
-        document.getElementById("input").addEventListener("keyup", search);
-
+        let delay;
+        document.getElementById("input").addEventListener("keyup", doSearch);
+        
         loadPizzas();
     
         function loadPizzas(search) {
@@ -49,8 +54,7 @@
                     search,
                 }
             }).then(res => { 
-                const list = res.data;
-                console.log("vedemo",list)
+                const list = res.data;                
                 if (list <= 0) {
                     document.querySelector('.no-pizza').classList.remove('d-none');
                     document.querySelector('.pizza-table').classList.add('d-none');
@@ -70,11 +74,11 @@
                                 <td class="align-middle">${pizza.name}</td>
                                 <td class="align-middle">${pizza.description}</td>
                                 <td class="align-middle">${pizza.category.name}</td>                 
-                                <td class="align-middle">${pizza.price}</td>
+                                <td class="align-middle">${pizza.price} euro</td>
                                 <td class="align-middle">
                                     <a class="btn btn-primary" href="/Home/Details/${pizza.id}">Dettaglio</a>
                                 </td>                                    
-                            </tr>
+                            </tr> 
                         `;            
                     })
                 }
@@ -82,9 +86,11 @@
 
         }
 
-        function search() {
+        function doSearch() {
             var value = document.getElementById("input").value;
-            loadPizzas(value);
+            clearTimeout(delay);
+            delay = setTimeout(() => loadPizzas(value), 2000);
+
         }
 
     </script>
