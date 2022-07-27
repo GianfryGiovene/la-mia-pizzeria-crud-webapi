@@ -11,12 +11,22 @@ namespace LaMiaPizzeria.Controllers.Api
     {
 
         
-        public IActionResult Get()
+        public IActionResult Get(string? search)
         
         {
             using(PizzaContext ctx = new PizzaContext())
             {
-                List<Pizza> pizzaList = ctx.PizzaList.Include(p =>p.Category).ToList<Pizza>();
+                List<Pizza> pizzaList;
+                if (search == null)
+                {
+                    pizzaList = ctx.PizzaList.Include(p => p.Category).ToList();
+                }
+                else
+                {
+                    pizzaList = ctx.PizzaList.Where(p => p.Name.Contains(search)).Include(p => p.Category).ToList<Pizza>();
+                }
+
+
 
                 return Ok(pizzaList);
             }            

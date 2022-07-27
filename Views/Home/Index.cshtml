@@ -1,5 +1,5 @@
 ﻿@{
-    ViewData["Title"] = "Home Page";
+    ViewData["Title"] = "Detail";
 }
 
 <div class="text-center">
@@ -8,7 +8,9 @@
     <p>  <a class="btn btn-primary" href="~/Pizza">QUI</a></p>
 </div>
 <div class="container ">
- 
+    <div class="my-2">
+        <input id="input" type="text" placeholder="Cerca una pizza" onkeyup="search"/>
+    </div>
     <table  class="table table-hover">
         <thead>
             <tr>
@@ -28,47 +30,64 @@
         
         
     <div class="col-12 text-center no-pizza">
-        <strong class="text-center ">Non ci sono pizze da visualizzare</strong>        
+        <div class="spinner-border" role="status">
+            <span class="visually-hidden">Loading...</span>
+        </div>         
     </div>
-        
-
 </div>
 
 
+@section Scripts {
+    <script type="text/javascript">
+        document.getElementById("input").addEventListener("keyup", search);
 
-
-<script>
+        loadPizzas();
     
-axios.get("api/pizza").then(data => { 
-    const list = data.data;
-    if (list == 0) {
-        document.querySelector('.no-pizza').classList.remove('d-none');
-        document.querySelector('.pizza-table').classList.add('d-none');
-    }else{
-        document.querySelector('.pizza-table').classList.remove('d-none');
-        document.querySelector('.no-pizza').classList.add('d-none');
+        function loadPizzas(search) {
+            axios.get("api/pizza", {
+                params: {
+                    search,
+                }
+            }).then(res => { 
+                const list = res.data;
+                if (list <= 0) {
+                    document.querySelector('.no-pizza').classList.remove('d-none');
+                    document.querySelector('.pizza-table').classList.add('d-none');
+                    
+                }else{
+                    document.querySelector('.pizza-table').classList.remove('d-none');
+                    document.querySelector('.no-pizza').classList.add('d-none');
+                    
 
-        document.querySelector('.pizza-table').innerHTML = '';
+                    document.querySelector('.pizza-table').innerHTML = '';
 
-        list.forEach(pizza => {
-            console.log("post", pizza);
+                    list.forEach(pizza => {
+                        console.log("post", pizza);
 
-            document.querySelector('.pizza-table').innerHTML +=
-            `
-                <tr class="my-lg-2 ">
-                        <td class="align-middle l"><img src="${pizza.photoUrl}" class="w-100 rounded-circle border-5 border border-success"/></td>
-                        <td class="align-middle">${pizza.name}</td>
-                        <td class="align-middle">${pizza.description}</td>
-                        <td class="align-middle">${pizza.category.name}</td>                 
-                        <td class="align-middle">${pizza.price}</td>
-                        <td class="align-middle">
-                            nulla assoluto
-                        </td>
-                    </tr>
-            `;            
-        })
-    }
-}).catch(e => console.log(e));
+                        document.querySelector('.pizza-table').innerHTML +=
+                        `
+                            <tr class="my-lg-2 ">
+                                    <td class="align-middle l"><img src="${pizza.photoUrl}" class="w-100 rounded-circle border-5 border border-success"/></td>
+                                    <td class="align-middle">${pizza.name}</td>
+                                    <td class="align-middle">${pizza.description}</td>
+                                    <td class="align-middle">${pizza.category.name}</td>                 
+                                    <td class="align-middle">${pizza.price}</td>
+                                    <td class="align-middle">
+                                        nulla assoluto
+                                    </td>
+                                </tr>
+                        `;            
+                    })
+                }
+            }).catch(e => console.log(e));
 
+        }
 
-</script>
+        function search() {
+            var value = document.getElementById("input").value;
+            loadPizzas(value);
+        }
+
+    </script>
+}
+
