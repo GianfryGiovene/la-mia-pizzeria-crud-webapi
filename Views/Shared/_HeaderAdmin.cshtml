@@ -2,17 +2,17 @@
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-warning border-bottom box-shadow mb-3 ">  
             <div class="container-fluid">
                 <div class="d-flex justify-content-between">
-                    <div+>
+                    <div>
                         <a class="navbar-brand text-danger" asp-controller="Home" asp-action="Index">Da Gianfri u Pizzajuol</a>    
                     </div>
                                                  
                     <div class="navbar-collapse collapse d-sm-inline-flex">
                         <ul class="navbar-nav mr-auto flex-grow-1 ">                            
-                            <li class="nav-item"><a class="dropdown-item" href="@Url.Action("Index","Home")">Home</a></li>
-                            <li class="nav-item"><a class="dropdown-item" href="@Url.Action("Index","Admin")">Area Riservata</a></li> 
-                            
+                            <li class="nav-item"><a class="dropdown-item" href="/">Home</a></li>
+                            <li class="nav-item"><a class="dropdown-item" href="@Url.Action("Index","Pizza")">Le nostre pizze</a></li>  
+                            <li class="nav-item"><a class="dropdown-item" href="@Url.Action("Index","Ingrediente")">I nostri ingredienti</a></li>
                         </ul>
-                        <div class="col-6">
+                        <div class="col-6 ">
                             <partial name="_LoginPartial" />
                         </div>
                     </div> 
