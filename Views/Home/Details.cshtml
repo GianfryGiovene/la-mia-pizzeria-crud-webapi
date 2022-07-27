@@ -1,76 +1,62 @@
 ﻿@{
-    ViewData["Title"] = "Home Page";
+    ViewData["Title"] = "Pagina di dettaglio";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Benvenuto dove le pizze costano il doppio</h1>
-    <h2>Visualizza le nostre pizze!!</h2>    
-    <p>  <a class="btn btn-primary" href="~/Pizza">QUI</a></p>
-</div>
+@model int
+
 <div class="container ">
  
-    <table  class="table table-hover">
-        <thead>
-            <tr>
-                <th class="col-2">Immagine</th>
-                <th class="col-2">Nome</th>
-                <th class="col-3">Descrizione</th>
-                <th class="col-2">Categoria</th>
-                <th class="col-1">Prezzo</th>
-                <th class="col-2">Comandi</th>
-            </tr>
-        </thead>
-        <tbody class="pizza-table">
-
-        </tbody>
+   <div  class="col-12 detail">
        
-    </table>
-        
-        
-    <div class="col-12 text-center no-pizza">
-        <div class="spinner-border" role="status">
-            <span class="visually-hidden">Loading...</span>
-        </div>    
+   </div>       
+   <div class="col-12 text-center no-pizza">
+        <span>La pizza non è presente</span>         
     </div>
-        
-
 </div>
 
 
-
-
-<script>
+@section Scripts {
     
-axios.get("api/pizza").then(data => { 
-    const list = data.data;
-    if (list <= 0) {
-        document.querySelector('.no-pizza').classList.remove('d-none');
-        document.querySelector('.pizza-table').classList.add('d-none');
-    }else{
-        document.querySelector('.pizza-table').classList.remove('d-none');
-        document.querySelector('.no-pizza').classList.add('d-none');
+    <script type="text/javascript">
+    
+        const id = @Model;
+        
 
-        document.querySelector('.pizza-table').innerHTML = '';
-
-        list.forEach(pizza => {
-            console.log("post", pizza);
-
-            document.querySelector('.pizza-table').innerHTML +=
-            `
-                <tr class="my-lg-2 ">
-                        <td class="align-middle l"><img src="${pizza.photoUrl}" class="w-100 rounded-circle border-5 border border-success"/></td>
-                        <td class="align-middle">${pizza.name}</td>
-                        <td class="align-middle">${pizza.description}</td>
-                        <td class="align-middle">${pizza.category.name}</td>                 
-                        <td class="align-middle">${pizza.price}</td>
-                        <td class="align-middle">
-                            nulla assoluto
-                        </td>
-                    </tr>
-            `;            
-        })
-    }
-}).catch(e => console.log(e));
+        loadPizza(id);
 
 
-</script>
+        function loadPizza(n) {
+            axios.get(`/api/pizza/${n}`).then(res => { 
+                console.log("ok", res.data);
+                const pizza = res.data;
+                           
+                
+                if (pizza == null) {
+                     console.log("sono null");
+                    document.querySelector('.detail').classList.add('d-none');
+                    document.querySelector('.no-pizza').classList.remove('d-none');
+                }else{
+                    console.log("non sono null");
+                    document.querySelector('.no-pizza').classList.add('d-none');
+                    document.querySelector('.detail').classList.remove('d-none');                    
+        
+                    document.querySelector('.detail').innerHTML +=
+                    `
+                        <div class="row">
+                            <div>
+                                <img src="${pizza.photoUrl}"/>
+                            </div>
+                            <div class="flex-column">
+                                <h2>${pizza.name}</h2>
+                                <p>${pizza.description}</p>
+                                <span>categoria: ${pizza.category.name}</span>
+                                <span>prezzo: ${pizza.price} euro</span>
+                            </div>
+                        </div>
+                    `;
+                }
+             }).catch(e => console.log(e));
+        }
+
+    </script>
+}
