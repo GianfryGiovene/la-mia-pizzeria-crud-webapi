@@ -21,5 +21,12 @@ namespace LaMiaPizzeria.Controllers
 
             return View(message);
         }
+
+        public IActionResult Edit(int id)
+        {
+          
+
+            return View("Update", id);
+        }
     }
 }

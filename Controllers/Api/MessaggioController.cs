@@ -55,7 +55,33 @@ namespace LaMiaPizzeria.Controllers.Api
                 ctx.SaveChanges();
                 return Ok();
             }
-            return Ok();
+            
+        }
+
+        [HttpPut("{id}")]
+        public IActionResult Put(int id, [FromBody] Messaggio message)
+        {
+            if (!ModelState.IsValid)
+            {
+                return UnprocessableEntity(ModelState);
+            }
+            using (PizzaContext ctx = new PizzaContext())
+            {
+                Messaggio messageToEdit = ctx.MessaggioList.Where(p => p.Id == id).FirstOrDefault();
+                if(messageToEdit != null)
+                {
+                    messageToEdit.Title = message.Title;
+                    message.TextMessage = message.TextMessage;
+                    ctx.SaveChanges();
+                    return Ok(messageToEdit);
+                }
+                else
+                {
+                    return NotFound();
+                }
+                return Ok();
+            }
+            
         }
        
     }

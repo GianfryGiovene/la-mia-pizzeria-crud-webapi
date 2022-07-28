@@ -1,0 +1,44 @@
+﻿@{
+    ViewData["Title"] = "Pagina modifica messaggio";
+}
+@model int
+<div class="container text-center">
+    <form onsubmit="sendMessage(event,id)">
+        <div >
+            <strong>Titolo messaggio: </strong>
+            <input id="title-text" name="Title" type="text" />
+        </div>
+        <div class="my-2 ">
+            <strong>Contenuto: </strong>
+            <textarea class="w-50" name="TextMessage" id="content-text"></textarea>
+        </div>
+        <div>
+            <button class="btn btn-success"  type="submit">Invia</button>
+        </div>
+    </form>
+   
+</div>
+
+
+@section Scripts {
+    
+<script type="text/javascript">
+const id = @Model;
+
+
+
+function sendMessage(e,n) {
+    e.preventDefault();
+    console.log(e);
+    axios.put(`/api/messaggio/${id}`, {
+        Title: document.querySelector("#title-text").value,
+        TextMessage: document.querySelector("#content-text").value,
+    }).then(res => {
+        console.log(res);
+        document.querySelector("#title-text").value = '';
+        document.querySelector("#content-text").value = '';
+        alert("Messaggio modificato");
+    }).catch(e => console.log("err", e));
+}
+</script>
+}
