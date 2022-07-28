@@ -21,6 +21,8 @@ namespace LaMiaPizzeria.Data
         public DbSet<Ingrediente> IngredienteList { get; set; }
         public DbSet<Categoria> CategoriaList { get; set; }
 
+        public DbSet<Messaggio> MessaggioList { get; set; }
+
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             optionsBuilder.UseSqlServer("Data Source=localhost;Initial Catalog=pizza_db;Integrated Security=True");
