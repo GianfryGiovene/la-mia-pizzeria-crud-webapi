@@ -52,7 +52,6 @@
                 }
             }).then(res => { 
                 const list = res.data;
-                console.log(list);
                 if (list <= 0) {
                     document.querySelector('.no-messages').classList.remove('d-none');
                     document.querySelector('.messages-table').classList.add('d-none');
@@ -71,7 +70,7 @@
                                 <td class="align-middle">${messaggio.title}</td>
                                 <td class="align-middle">${messaggio.textMessage}</td>
                                 <td class="align-middle">
-                                    <a class="btn btn-primary" href="/Home/Details/${messaggio.id}">Dettaglio</a>
+                                    <a class="btn btn-primary" href="/Messaggio/Details/${messaggio.id}">Dettaglio</a>
                                 </td>                                    
                             </tr> 
                         `;            

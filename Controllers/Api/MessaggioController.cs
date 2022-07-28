@@ -2,7 +2,7 @@
 using LaMiaPizzeria.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-
+using Microsoft.AspNetCore.Mvc.ModelBinding;
 
 namespace LaMiaPizzeria.Controllers.Api
 {
@@ -26,5 +26,37 @@ namespace LaMiaPizzeria.Controllers.Api
                 return Ok(messagesList);
             }
         }
+        [HttpGet("{id}")]
+        public IActionResult Get(int id)
+        {
+            using(PizzaContext ctx = new PizzaContext())
+            {
+                Messaggio message = ctx.MessaggioList.Where(p => p.Id == id).FirstOrDefault();
+
+                if(message == null)
+                {
+                    return NotFound();
+                }
+                return Ok(message);
+            }
+            
+        }
+
+        [HttpPost]
+        public IActionResult Post([FromBody] Messaggio message)
+        {
+            if (!ModelState.IsValid)
+            {
+                return UnprocessableEntity(ModelState);
+            }
+            using (PizzaContext ctx = new PizzaContext())
+            {
+                ctx.MessaggioList.Add(message);
+                ctx.SaveChanges();
+                return Ok();
+            }
+            return Ok();
+        }
+       
     }
 }

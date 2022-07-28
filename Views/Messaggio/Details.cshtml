@@ -1,0 +1,59 @@
+﻿@{
+    ViewData["Title"] = "Pagina di dettaglio";
+}
+
+@model int
+
+<div class="container">
+ 
+   <div  class="col-12 detail ">
+       
+   </div>       
+   <div class="col-12 text-center no-message">
+        <span>Il messaggio non è presente</span>         
+    </div>
+</div>
+
+
+@section Scripts {
+    
+    <script type="text/javascript">
+    
+        const id = @Model;
+        
+
+        loadMessaggio(id);
+
+
+        function loadMessaggio(n) {
+            axios.get(`/api/messaggio/${n}`).then(res => { 
+                console.log(res);
+                const message = res.data;
+                console.log(message);
+                
+                if (message == null) {
+                    document.querySelector('.detail').classList.add('d-none');
+                    document.querySelector('.no-message').classList.remove('d-none');
+                }else{
+                    document.querySelector('.no-message').classList.add('d-none');
+                    document.querySelector('.detail').classList.remove('d-none');                    
+        
+                    document.querySelector('.detail').innerHTML +=
+                    `
+                        <div class="flex-column">
+                            
+                                <h2>${message.title}</h2>
+                                <p>${message.textMessage}</p>
+                                
+                                <div class="my-2">
+                                    <a class="btn btn-secondary" href="/Messaggio"> Indietro </a>
+                                </div>
+                            
+                        </div>
+                    `;
+                }
+             }).catch(e => console.log(e));
+        }
+
+    </script>
+}

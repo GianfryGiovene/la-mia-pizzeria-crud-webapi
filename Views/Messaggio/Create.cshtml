@@ -1,0 +1,41 @@
+﻿@{
+    ViewData["Title"] = "Pagina creazione messaggio";
+}
+
+<div class="container text-center">
+    <form onsubmit="sendMessage(event)">
+        <div >
+            <strong>Titolo messaggio: </strong>
+            <input id="title-text" name="Title" type="text" />
+        </div>
+        <div class="my-2 ">
+            <strong>Contenuto: </strong>
+            <textarea class="w-50" name="TextMessage" id="content-text"></textarea>
+        </div>
+        <div>
+            <button class="btn btn-success"  type="submit">Invia</button>
+        </div>
+    </form>
+   
+</div>
+
+
+@section Scripts {
+    
+<script type="text/javascript">
+
+function sendMessage(e) {
+    e.preventDefault();
+    console.log(e);
+    axios.post('/api/messaggio', {
+        Title: document.querySelector("#title-text").value,
+        TextMessage: document.querySelector("#content-text").value,
+    }).then(res => {
+        console.log(res);
+        document.querySelector("#title-text").value = '';
+        document.querySelector("#content-text").value = '';
+        alert("Messaggio inviato");
+    }).catch(e => console.log("err", e));
+}
+</script>
+}
