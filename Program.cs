@@ -2,8 +2,13 @@ using LaMiaPizzeria.Data;
 using LaMiaPizzeria.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity;
+using LaMiaPizzeria.Models.Repositories.Interfaces;
+using LaMiaPizzeria.Models.Repositories;
 
 var builder = WebApplication.CreateBuilder(args);
+
+builder.Services.AddScoped<IPizzaRepository, InMemoryPizzaRepository>();
+
 var connectionString = builder.Configuration.GetConnectionString("PizzaContextConnection") ?? throw new InvalidOperationException("Connection string 'PizzaContextConnection' not found.");
 builder.Services.AddDbContext<PizzaContext>(options =>
     options.UseSqlServer(connectionString)); 

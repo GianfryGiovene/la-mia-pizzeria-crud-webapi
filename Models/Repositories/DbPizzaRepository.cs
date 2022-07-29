@@ -6,70 +6,7 @@ using Microsoft.EntityFrameworkCore;
 namespace LaMiaPizzeria.Models.Repositories
 {
     public class DbPizzaRepository : IPizzaRepository
-    {
-        public void Create(Pizza pizza, List<string> selectedIngredients)
-        {
-            using(PizzaContext ctx = new PizzaContext())
-                    {
-                pizza.IngredienteList = new List<Ingrediente>();
-                if(selectedIngredients != null)
-                {
-                    foreach(string selectedIng in selectedIngredients)
-                    {
-                        int selectedIntIngId = int.Parse(selectedIng);
-                        Ingrediente ing = ctx.IngredienteList.Where(p=> p.Id == selectedIntIngId).FirstOrDefault();
-
-                        pizza.IngredienteList.Add(ing);
-                    }
-                }
-
-                ctx.Add(pizza);
-                ctx.SaveChanges();
-            }
-        }
-
-        public void Update(Pizza pizza, List<string> selectedIng)
-        {
-           using(PizzaContext ctx = new PizzaContext())
-           {
-                pizza.Category = ctx.CategoriaList.Where(p => p.Id == pizza.CategoryId).FirstOrDefault();
-
-                ctx.Attach(pizza);
-
-                pizza.IngredienteList.Clear();
-
-                if(selectedIng != null)
-                {
-                    foreach(string selIng in selectedIng)
-                    {
-                        int selIntIngId = int.Parse(selIng);
-                        Ingrediente ing = ctx.IngredienteList.Where(p => p.Id == selIntIngId).FirstOrDefault();
-                        pizza.IngredienteList.Add(ing);
-                    }
-                }
-                ctx.Update(pizza);
-                ctx.SaveChanges();
-            }
-        }
-
-        public void Delete(int id)
-        {
-            using (PizzaContext db = new PizzaContext())
-            {
-                Pizza pizza = db.PizzaList.Where(p => p.Id == id).FirstOrDefault();
-
-                if (pizza != null)
-                {
-                    db.PizzaList.Remove(pizza);
-                    db.SaveChanges();
-                }
-                else
-                {
-                    throw new Exception();
-                }
-            }
-        }
-
+    {     
         public Pizza GetById(int id)
         {
             using (PizzaContext db = new PizzaContext())
@@ -110,24 +47,67 @@ namespace LaMiaPizzeria.Models.Repositories
             }
         }
 
-        
+        public void Create(Pizza pizza, List<string> selectedIngredients)
+        {
+            using (PizzaContext ctx = new PizzaContext())
+            {
+                pizza.IngredienteList = new List<Ingrediente>();
+                if (selectedIngredients != null)
+                {
+                    foreach (string selectedIng in selectedIngredients)
+                    {
+                        int selectedIntIngId = int.Parse(selectedIng);
+                        Ingrediente ing = ctx.IngredienteList.Where(p => p.Id == selectedIntIngId).FirstOrDefault();
 
+                        pizza.IngredienteList.Add(ing);
+                    }
+                }
 
+                ctx.Add(pizza);
+                ctx.SaveChanges();
+            }
+        }
 
-        //private List<SelectListItem> GetIngredientsList()
-        //{
-        //    using (PizzaContext db = new PizzaContext())
-        //    {
-        //        List<SelectListItem> ingredientsList = new List<SelectListItem>();
-        //        List<Ingrediente> ingredients = db.IngredienteList.ToList();
+        public void Update(Pizza pizza, List<string> selectedIng)
+        {
+            using (PizzaContext ctx = new PizzaContext())
+            {
+                pizza.Category = ctx.CategoriaList.Where(p => p.Id == pizza.CategoryId).FirstOrDefault();
 
-        //        foreach (Ingrediente ingredient in ingredients)
-        //        {
-        //            ingredientsList.Add(new SelectListItem() { Text = ingredient.Name, Value = ingredient.Id.ToString() });
-        //        }
+                ctx.Attach(pizza);
 
-        //        return ingredientsList;
-        //    }
-        //}
+                pizza.IngredienteList.Clear();
+
+                if (selectedIng != null)
+                {
+                    foreach (string selIng in selectedIng)
+                    {
+                        int selIntIngId = int.Parse(selIng);
+                        Ingrediente ing = ctx.IngredienteList.Where(p => p.Id == selIntIngId).FirstOrDefault();
+                        pizza.IngredienteList.Add(ing);
+                    }
+                }
+                ctx.Update(pizza);
+                ctx.SaveChanges();
+            }
+        }
+
+        public void Delete(Pizza pizza)
+        {
+            using (PizzaContext db = new PizzaContext())
+            {
+                Pizza pizzaToDelete = db.PizzaList.Where(p => p.Id == pizza.Id).FirstOrDefault();
+
+                if (pizzaToDelete != null)
+                {
+                    db.PizzaList.Remove(pizza);
+                    db.SaveChanges();
+                }
+                else
+                {
+                    throw new Exception();
+                }
+            }
+        }
     }
 }

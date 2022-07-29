@@ -1,6 +1,7 @@
 ﻿using LaMiaPizzeria.Data;
 using LaMiaPizzeria.Models;
 using LaMiaPizzeria.Models.Repositories;
+using LaMiaPizzeria.Models.Repositories.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -12,14 +13,15 @@ namespace LaMiaPizzeria.Controllers
     [Authorize]
     public class PizzaController : Controller
     {
-        private DbPizzaRepository PizzaRepository;
+        private IPizzaRepository PizzaRepository;
+        private InMemoryPizzaRepository PizzaRepositoryInMemory;
         //************* INDEX VIEW ***************
-        public PizzaController()
+        public PizzaController(IPizzaRepository _pizzaRepository)
         {
-            this.PizzaRepository = new DbPizzaRepository();
+            this.PizzaRepository = _pizzaRepository;
         }
 
-        [HttpGet]
+        [HttpGet] 
         public IActionResult Index(string? search)
         {
             List<Pizza> pizzaList;
@@ -168,9 +170,9 @@ namespace LaMiaPizzeria.Controllers
         //************* DELETE VIEW ***************
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Delete(int id)
+        public IActionResult Delete(Pizza pizza)
         {
-            this.PizzaRepository.Delete(id);
+            this.PizzaRepository.Delete(pizza);
             return RedirectToAction("Index");                
             
         }

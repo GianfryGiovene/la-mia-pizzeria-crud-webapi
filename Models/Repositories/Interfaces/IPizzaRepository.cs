@@ -12,6 +12,6 @@
 
         public void Update(Pizza pizza, List<string> ingList);
 
-        public void Delete(int id);
+        public void Delete(Pizza pizza);
     }
 }
