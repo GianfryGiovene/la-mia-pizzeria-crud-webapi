@@ -35,6 +35,22 @@ namespace LaMiaPizzeria.Models.Repositories
 
         public Pizza GetById(int id)
         {
+            using (PizzaContext db = new PizzaContext())
+            {
+                Pizza pizza = db.PizzaList.Where(p => p.Id == id).Include(c => c.Category).FirstOrDefault();
+
+                if (pizza == null)
+                {
+                    return null;
+                }
+                else
+                {
+                    db.Entry(pizza).Collection("IngredienteList").Load();
+
+                    return pizza;
+                }
+
+            }
             throw new NotImplementedException();
         }
 

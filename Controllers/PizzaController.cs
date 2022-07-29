@@ -43,21 +43,14 @@ namespace LaMiaPizzeria.Controllers
 
         public IActionResult Details(int id)
         {
-            using (PizzaContext db = new PizzaContext())
-            {  
-                Pizza pizza  = db.PizzaList.Where(p => p.Id == id).Include(c => c.Category).FirstOrDefault();
-
-                if(pizza == null)
-                {
-                    return NotFound("Pizza non trovata");
-                }
-                else
-                {
-                    db.Entry(pizza).Collection("IngredienteList").Load();
-                    
-                    return View("Details", pizza);
-                }
-               
+            Pizza pizza = PizzaRepository.GetById(id);
+            if(pizza == null)
+            {
+                return NotFound();
+            }
+            else
+            {
+                return View(pizza);
             }
 
         }
