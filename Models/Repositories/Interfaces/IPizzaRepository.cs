@@ -10,7 +10,7 @@
 
         public void Create(Pizza pizza, List<string> ingList);
 
-        public void Update(Helper model);
+        public void Update(Pizza pizza, List<string> ingList);
 
         public void Delete(int id);
     }

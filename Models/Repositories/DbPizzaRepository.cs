@@ -28,6 +28,30 @@ namespace LaMiaPizzeria.Models.Repositories
             }
         }
 
+        public void Update(Pizza pizza, List<string> selectedIng)
+        {
+           using(PizzaContext ctx = new PizzaContext())
+           {
+                pizza.Category = ctx.CategoriaList.Where(p => p.Id == pizza.CategoryId).FirstOrDefault();
+
+                ctx.Attach(pizza);
+
+                pizza.IngredienteList.Clear();
+
+                if(selectedIng != null)
+                {
+                    foreach(string selIng in selectedIng)
+                    {
+                        int selIntIngId = int.Parse(selIng);
+                        Ingrediente ing = ctx.IngredienteList.Where(p => p.Id == selIntIngId).FirstOrDefault();
+                        pizza.IngredienteList.Add(ing);
+                    }
+                }
+                ctx.Update(pizza);
+                ctx.SaveChanges();
+            }
+        }
+
         public void Delete(int id)
         {
             using (PizzaContext db = new PizzaContext())
@@ -38,6 +62,10 @@ namespace LaMiaPizzeria.Models.Repositories
                 {
                     db.PizzaList.Remove(pizza);
                     db.SaveChanges();
+                }
+                else
+                {
+                    throw new Exception();
                 }
             }
         }
@@ -82,10 +110,7 @@ namespace LaMiaPizzeria.Models.Repositories
             }
         }
 
-        public void Update(Helper model)
-        {
-            throw new NotImplementedException();
-        }
+        
 
 
 

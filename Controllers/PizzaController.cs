@@ -142,38 +142,27 @@ namespace LaMiaPizzeria.Controllers
                     model.CategoryList = categoryList;
                     model.IngredientiList = GetIngredientsList();
 
-                    return View("Create", model);
+                    return View("Update", model);
                 }
 
             }
-            using (PizzaContext db = new PizzaContext())
+            
+            Pizza pizzaToEdit = PizzaRepository.GetById(id);
+
+            if(pizzaToEdit != null)
             {
-                Pizza editPizza = db.PizzaList.Where(pizza => pizza.Id == id).Include(p=>p.IngredienteList).FirstOrDefault();
-                if(editPizza != null)
-                {
-                    editPizza.EditPizza(model.Pizza.Name, model.Pizza.Description, model.Pizza.PhotoUrl, model.Pizza.Price, model.Pizza.CategoryId);
+                pizzaToEdit.Name = model.Pizza.Name;
+                pizzaToEdit.Description = model.Pizza.Description;
+                pizzaToEdit.CategoryId = model.Pizza.CategoryId;
+                pizzaToEdit.Price = model.Pizza.Price;
 
-                    editPizza.IngredienteList.Clear();
-
-                    if (model.SelectedIngredienti != null)
-                    {
-                        foreach (string ingredient in model.SelectedIngredienti)
-                        {
-                            int selectedIntTagId = Int32.Parse(ingredient);
-
-                            Ingrediente ingrediente = db.IngredienteList.Where(p => p.Id == selectedIntTagId).FirstOrDefault();
-
-                            editPizza.IngredienteList.Add(ingrediente);
-                        }
-                    }
-                    db.SaveChanges();
-                    return RedirectToAction("Index");
-                }
-                else
-                {
-                    return NotFound();
-                }
-            }            
+                PizzaRepository.Update(pizzaToEdit, model.SelectedIngredienti);
+                return RedirectToAction("index");
+            }
+            else
+            {
+                return NotFound();
+            }
         }
 
         //************* DELETE VIEW ***************
