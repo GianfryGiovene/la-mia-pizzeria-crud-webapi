@@ -1,5 +1,6 @@
 ﻿using LaMiaPizzeria.Data;
 using LaMiaPizzeria.Models;
+using LaMiaPizzeria.Models.Repositories;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -11,16 +12,30 @@ namespace LaMiaPizzeria.Controllers
     [Authorize]
     public class PizzaController : Controller
     {
+        private DbPizzaRepository PizzaRepository;
         //************* INDEX VIEW ***************
-        [HttpGet]
-        public IActionResult Index()
+        public PizzaController()
         {
-            using (PizzaContext db = new PizzaContext())
+            this.PizzaRepository = new DbPizzaRepository();
+        }
+
+        [HttpGet]
+        public IActionResult Index(string? search)
+        {
+            List<Pizza> pizzaList;
+            if(search == null)
             {
-                IQueryable<Pizza> pizzaList = db.PizzaList.Include(p => p.Category);
-                
-                return View("Index", pizzaList.ToList());
+                pizzaList = this.PizzaRepository.GetList();
             }
+            else
+            {
+                pizzaList = this.PizzaRepository.GetListByFilter(search);
+            }
+
+            
+
+            return View("Index", pizzaList);
+            
         }
 
 
@@ -82,26 +97,8 @@ namespace LaMiaPizzeria.Controllers
                 }
 
             }
-            using (PizzaContext db = new PizzaContext())
-            {
-                Pizza newPizza = new Pizza(model.Pizza.Name, model.Pizza.Description, model.Pizza.PhotoUrl, model.Pizza.Price, model.Pizza.CategoryId, new List<Ingrediente>());
-                
-                if (model.SelectedIngredienti != null)
-                {
-                    foreach (string ingredient in model.SelectedIngredienti)
-                    {
-                        int selectedIntTagId = Int32.Parse(ingredient);
-
-                        Ingrediente ingrediente = db.IngredienteList.Where(p => p.Id == selectedIntTagId).FirstOrDefault();
-
-                        newPizza.IngredienteList.Add(ingrediente);
-                    }
-                }
-                db.PizzaList.Add(newPizza);
-
-                db.SaveChanges();
-                return RedirectToAction("Index");
-            }
+            this.PizzaRepository.Create(model.Pizza, model.SelectedIngredienti);
+            return RedirectToAction("Index");
 
         } 
 

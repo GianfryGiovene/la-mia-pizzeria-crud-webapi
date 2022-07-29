@@ -83,6 +83,26 @@ namespace LaMiaPizzeria.Controllers.Api
             }
             
         }
+
+        [HttpDelete("{id}")]
+        public IActionResult Delete(int id)
+        {
+            using(PizzaContext ctx = new PizzaContext())
+            {
+                Messaggio mexToDelete = ctx.MessaggioList.Where(p => p.Id == id).FirstOrDefault();
+                if(mexToDelete != null)
+                {
+                    ctx.MessaggioList.Remove(mexToDelete);
+
+                    ctx.SaveChanges();
+                    return Ok();
+                }
+                else
+                {
+                    return NotFound();
+                }
+            }
+        }
        
     }
 }
